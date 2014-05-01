@@ -1,0 +1,10 @@
+{
+    "srcDir": "src",
+    "buildDir": "build",
+    "srcFilename": "index.html",
+    "buildFilename": "index.html",
+    "viewport": {
+        "width": 1024,
+        "height": 768
+    }
+}

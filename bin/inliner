@@ -1,0 +1,204 @@
+#!/usr/bin/env phantomjs
+
+var fs = require('fs'),
+    system = require('system'),
+    webpage = require('webpage');
+
+var args = system.args;
+
+var showUsage = function() {
+    console.error('Usage: phantomjs ' + args[0] + ' <infile> <outfile> [<width:height>]');
+    phantom.exit(0);
+};
+
+if (args.length < 3) {
+    showUsage();
+}
+
+var INFILE = args[1];
+var OUTFILE = args[2];
+
+var VIEWPORT_WIDTH = 1280;
+var VIEWPORT_HEIGHT = 720;
+
+var DEBUG = false;
+
+if (args[3]) {
+    var dimensions = args[3].split(':');
+
+    if (
+        dimensions.length == 2 &&
+        dimensions[0].match(/^[0-9]+$/) &&
+        dimensions[1].match(/^[0-9]+$/)
+    ) {
+        VIEWPORT_WIDTH = parseInt(dimensions[0]);
+        VIEWPORT_HEIGHT = parseInt(dimensions[1]);
+    } else {
+        console.error('Error: Invalid dimensions');
+        showUsage();
+    }
+}
+
+if (typeof args[4] != 'undefined' && args[4]) {
+    DEBUG = true;
+}
+
+if (DEBUG) {
+    console.debug('Input: ' + INFILE);
+    console.debug('Output: ' + OUTFILE);
+    console.debug('Viewport Size: ' + VIEWPORT_WIDTH + 'x' + VIEWPORT_HEIGHT);
+}
+
+var source = webpage.create();
+source.viewportSize = {
+    width: VIEWPORT_WIDTH,
+    height: VIEWPORT_HEIGHT
+};
+
+source.onConsoleMessage = function(msg) {
+    console.log(msg);
+};
+
+var start = new Date().getTime();
+
+source.open(INFILE, function(status) {
+    source.evaluate(function() {
+        var nextPhantomId = 1;
+        var pendingRules = [];
+
+        var computeStyles = function(rules) {
+            for (var i = 0; i < rules.length; i++) {
+                var rule = rules[i];
+
+                if (rule.type == CSSRule.STYLE_RULE) {
+                    var elements = [];
+
+                    try {
+                        elements = document.querySelectorAll(rule.selectorText);
+                    } catch (e) {
+                        continue;
+                    }
+
+
+                    if (elements && elements.length) {
+                        for (var j = 0; j < elements.length; j++) {
+                            var el = elements[j];
+                            var specificity = 0;
+                            var phantomId = el.getAttribute('data-phantom-id');
+
+                            if (!phantomId) {
+                                el.setAttribute(
+                                    'data-phantom-id',
+                                    nextPhantomId
+                                );
+                                phantomId = nextPhantomId;
+
+                                queueStyles(
+                                    pendingRules,
+                                    phantomId,
+                                    el.style,
+                                    0,
+                                    'inline'
+                                );
+
+                                nextPhantomId++;
+                            }
+
+                            queueStyles(
+                                pendingRules,
+                                phantomId,
+                                rule.style,
+                                specificity,
+                                'extern'
+                            );
+                        }
+                    }
+                } else if (rule.type == CSSRule.MEDIA_RULE) {
+                    if (window.matchMedia(rule.media[0]).matches) {
+                        computeStyles(rule.cssRules);
+                    }
+                }
+            }
+        };
+
+        var queueStyles = function(queue, id, styles, specificity, source) {
+            if (typeof queue[id] === 'undefined') {
+                queue[id] = {};
+            }
+
+            for (var i = 0; i < styles.length; i++) {
+                var name = styles[i];
+                if (typeof queue[id][name] === 'undefined') {
+                    queue[id][name] = [];
+                }
+
+                var priority = specificity;
+
+                switch(source) {
+                    case 'inline':
+                        priority += 2000;
+                        break;
+                    case 'extern':
+                        priority += 1000;
+                        break;
+                }
+
+                priority += styles.getPropertyPriority(name) ? 10000 : 0;
+
+                queue[id][name].push({
+                    'val': styles.getPropertyValue(name),
+                    'specificity': specificity,
+                    'priority': priority,
+                    'source': source
+                });
+            }
+        };
+
+        var sortStyles = function(a, b) {
+            return a.priority - b.priority;
+        };
+
+        for (var i = 0; i < document.styleSheets.length; i++) {
+            var sheet = document.styleSheets[i];
+
+            if (sheet.cssRules && sheet.cssRules.length) {
+                computeStyles(sheet.cssRules);
+            }
+        }
+
+        for (var pid in pendingRules) {
+            var target = document.querySelector(
+                '[data-phantom-id="' + pid + '"]'
+            );
+
+            if (target) {
+                for (var property in pendingRules[pid]) {
+                    pendingRules[pid][property].sort(sortStyles);
+                    var numCandidates = pendingRules[pid][property].length;
+                    target.style.setProperty(
+                        property,
+                        pendingRules[pid][property][numCandidates - 1].val
+                    );
+                }
+
+                target.removeAttribute('data-phantom-id');
+                target.removeAttribute('class');
+            }
+        }
+
+        var styleElements = document.querySelectorAll('style,link');
+        for (var j = styleElements.length -  1; j >= 0; j--) {
+            styleElements[j].parentNode.removeChild(styleElements[j]);
+        }
+    });
+
+    fs.write(OUTFILE, source.content, 'w');
+    var end = new Date().getTime();
+
+    if (DEBUG) {
+        console.debug(
+            'Finished processing in ' + ((end - start) / 1000) + ' seconds'
+        );
+    }
+    phantom.exit(0);
+});
