@@ -1,15 +1,12 @@
 # styner #
 
-**`v0.1.0-alpha`**
+**`v0.1.1-alpha`**
 > A CSS style inliner
 
 
 ## Installation ##
 
-`styner1` requires the following to be installed:
-
-  - [nodejs](https://nodejs.org) v0.8 or higher
-  - [PhantomJS](https://phantomjs.org) v1.9.2 or higher
+`styner` requires [nodejs](https://nodejs.org) v0.8 or higher
 
 Install `styner` with:
 

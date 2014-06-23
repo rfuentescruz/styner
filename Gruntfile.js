@@ -57,8 +57,9 @@ module.exports = function(grunt) {
         );
 
         var inliner = spawn(
-            __dirname + '/bin/inliner',
+            __dirname + '/node_modules/.bin/phantomjs',
             [
+                __dirname + '/bin/inliner',
                 input,
                 output,
                 grunt.config.get('project.viewport.width') + ':' + grunt.config.get('project.viewport.height')

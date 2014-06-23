@@ -16,46 +16,40 @@ if (!command || command == 'help') {
     ));
     process.exit(1);
 } else if (command == 'init') {
-    exec('phantomjs -v', function(err) {
-        if (err && err.code == 127) {
-            console.error('styner requires phantomjs v1.9.7 or higher');
+    var initConfig = require(
+        __dirname + '/files/Stynerfile-defaults.json'
+    );
+    fs.exists('Stynerfile', function(exists) {
+        if (exists) {
+            console.log('A "Stynerfile" already exists. Nothing to be done');
+            return;
         } else {
-            var initConfig = require(
-                __dirname + '/files/Stynerfile-defaults.json'
-            );
-            fs.exists('Stynerfile', function(exists) {
-                if (exists) {
-                    console.log('A "Stynerfile" already exists. Nothing to be done');
-                    return;
-                } else {
-                    fs.mkdir(initConfig.srcDir, '0755', function(e) {
-                        if (e && e.code != 'EEXIST') {
-                            throw e;
-                        }
-                    });
-                    fs.mkdir(initConfig.buildDir, '0755', function(e) {
-                        if (e && e.code != 'EEXIST') {
-                            throw e;
-                        }
-                    });
-                    fs.writeFileSync(
-                        'Stynerfile.json',
-                        fs.readFileSync(__dirname + '/files/Stynerfile.json')
-                    );
-
-                    var srcFile = util.format(
-                        '%s/%s',
-                        initConfig.srcDir,
-                        initConfig.srcFilename
-                    );
-                    fs.exists(srcFile, function(exists) {
-                        if (!exists) {
-                            fs.writeFileSync(srcFile, '');
-                        }
-                    });
-                    console.log('Created a "Stynerfile" in the current dir');
+            fs.mkdir(initConfig.srcDir, '0755', function(e) {
+                if (e && e.code != 'EEXIST') {
+                    throw e;
                 }
             });
+            fs.mkdir(initConfig.buildDir, '0755', function(e) {
+                if (e && e.code != 'EEXIST') {
+                    throw e;
+                }
+            });
+            fs.writeFileSync(
+                'Stynerfile.json',
+                fs.readFileSync(__dirname + '/files/Stynerfile.json')
+            );
+
+            var srcFile = util.format(
+                '%s/%s',
+                initConfig.srcDir,
+                initConfig.srcFilename
+            );
+            fs.exists(srcFile, function(exists) {
+                if (!exists) {
+                    fs.writeFileSync(srcFile, '');
+                }
+            });
+            console.log('Created a "Stynerfile" in the current dir');
         }
     });
 } else {
