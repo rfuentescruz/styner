@@ -6,7 +6,7 @@ var path = require('path'),
 
 module.exports = function(grunt) {
     var baseConfig = grunt.file.readJSON(
-        path.resolve(__dirname + '/files/Stynerfile-defaults.json')
+        path.resolve(__dirname + '/Stynerfile-defaults.json')
     );
 
     var config = extend(
@@ -30,14 +30,14 @@ module.exports = function(grunt) {
         less: {
             development: {
                 files: {
-                    '<%= project.srcDir %>/css/styles.less.css': '<%= project.srcDir %>/less/styles.less'
+                    '<%= project.srcDir %>/css/styles.css': '<%= project.srcDir %>/less/styles.less'
                 }
             }
         }
     });
 
-    grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-watch/tasks/');
-    grunt.loadTasks(__dirname + '/node_modules/grunt-contrib-less/tasks/');
+    grunt.loadTasks(__dirname + '/../node_modules/grunt-contrib-watch/tasks/');
+    grunt.loadTasks(__dirname + '/../node_modules/grunt-contrib-less/tasks/');
 
     grunt.registerTask('default', ['watch']);
 
@@ -57,9 +57,9 @@ module.exports = function(grunt) {
         );
 
         var inliner = spawn(
-            __dirname + '/node_modules/.bin/phantomjs',
+            __dirname + '/../node_modules/.bin/phantomjs',
             [
-                __dirname + '/bin/inliner',
+                __dirname + '/../bin/inliner',
                 input,
                 output,
                 grunt.config.get('project.viewport.width') + ':' + grunt.config.get('project.viewport.height')

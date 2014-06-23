@@ -17,7 +17,7 @@ if (!command || command == 'help') {
     process.exit(1);
 } else if (command == 'init') {
     var initConfig = require(
-        __dirname + '/files/Stynerfile-defaults.json'
+        __dirname + '/../files/Stynerfile-defaults.json'
     );
     fs.exists('Stynerfile', function(exists) {
         if (exists) {
@@ -36,7 +36,7 @@ if (!command || command == 'help') {
             });
             fs.writeFileSync(
                 'Stynerfile.json',
-                fs.readFileSync(__dirname + '/files/Stynerfile.json')
+                fs.readFileSync(__dirname + '/../files/Stynerfile.json')
             );
 
             var srcFile = util.format(
@@ -59,7 +59,7 @@ if (!command || command == 'help') {
         } else {
 
             var defaults = require(
-                __dirname + '/files/Stynerfile-defaults.json'
+                __dirname + '/../files/Stynerfile-defaults.json'
             );
 
             var config = extend(
@@ -73,7 +73,7 @@ if (!command || command == 'help') {
                     'grunt',
                     [
                         '--gruntfile',
-                        __dirname + '/Gruntfile.js',
+                        __dirname + '/../files/Gruntfile.js',
                         '--base',
                         process.cwd()
                     ],
@@ -85,7 +85,7 @@ if (!command || command == 'help') {
                     'grunt',
                     [
                         '--gruntfile',
-                        __dirname + '/Gruntfile.js',
+                        __dirname + '/../files/Gruntfile.js',
                         '--base',
                         process.cwd(),
                         'flatten:' + target

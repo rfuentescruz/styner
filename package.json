@@ -1,7 +1,7 @@
 {
     "name": "styner",
     "description": "A CSS style inliner",
-    "version": "0.1.1-alpha",
+    "version": "0.2.0-alpha",
     "author": "Rolando Cruz (https://github.com/rfuentescruz)",
     "repository": {
         "type": "git",
@@ -13,7 +13,7 @@
             "url": "http://github.com/rfuentescruz/styner/blob/master/LICENSE"
         }
     ],
-    "bin": "./styner.js",
+    "bin": "./bin/styner-cli.js",
     "preferGlobal": true,
     "dependencies": {
         "extend": "~1.2.1",
@@ -21,5 +21,9 @@
         "grunt-contrib-watch": "~0.6.1",
         "grunt-contrib-less": "~0.11.0",
         "phantomjs": "~1.9.7"
+    },
+    "devDependencies": {
+        "jison": "~0.4.13",
+        "requirejs": "~2.1.14"
     }
 }
