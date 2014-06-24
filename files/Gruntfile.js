@@ -59,6 +59,7 @@ module.exports = function(grunt) {
         var inliner = spawn(
             __dirname + '/../node_modules/.bin/phantomjs',
             [
+                '--web-security=no',
                 __dirname + '/../bin/inliner',
                 input,
                 output,

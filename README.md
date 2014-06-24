@@ -1,6 +1,6 @@
 # styner #
 
-**`v0.2.0-alpha`**
+**`v0.2.1-alpha`**
 > A CSS style inliner
 
 
@@ -102,6 +102,5 @@ Dump the config being used by the current project based on the values of in the 
 
 ## Known issues ##
 
- - `styner` cannot access cross-domain stylesheets
  - `styner` doesn't support user / reader styles
  - `styner` only supports Webkit-supported CSS rules
