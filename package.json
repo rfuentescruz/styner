@@ -24,6 +24,7 @@
     },
     "devDependencies": {
         "jison": "~0.4.13",
-        "requirejs": "~2.1.14"
+        "requirejs": "~2.1.14",
+        "almond": "~0.2.9"
     }
 }
