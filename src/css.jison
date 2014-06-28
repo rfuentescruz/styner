@@ -44,7 +44,9 @@ V         v|\\0{0,4}(58|78)(\r\n|[ \t\r\n\f])?|\\v
 ">"              return 'GREATER';
 ","              return 'COMMA';
 "~"              return 'TILDE';
+"::"             return 'DOUBLE_COLON';
 ":not("          return 'NOT';
+":"              return 'COLON';
 @{ident}         return 'ATKEYWORD';
 {invalid}        return 'INVALID';
 {num}%           return 'PERCENTAGE';
@@ -152,10 +154,10 @@ attrib_value
   ;
 
 pseudo
-  : "::" functional_pseudo { selector.specificity += 1; $$ = $1 + '' + $2; }
-  | "::" IDENT { selector.specificity += 1; $$ = $1 + '' + $2; }
-  | ':' functional_pseudo { selector.specificity += 10; $$ = $1 + '' + $2; }
-  | ':' IDENT { selector.specificity += 10; $$ = $1 + '' + $2; }
+  : DOUBLE_COLON functional_pseudo { selector.specificity += 1; $$ = $1 + '' + $2; }
+  | DOUBLE_COLON IDENT { selector.specificity += 1; $$ = $1 + '' + $2; }
+  | COLON functional_pseudo { selector.specificity += 10; $$ = $1 + '' + $2; }
+  | COLON IDENT { selector.specificity += 10; $$ = $1 + '' + $2; }
   ;
 
 functional_pseudo
