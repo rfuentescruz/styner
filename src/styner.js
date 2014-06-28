@@ -35,21 +35,27 @@ define('styner', ['css-parser'], function(parser) {
 
             if (rule.type == CSSRule.STYLE_RULE) {
                 var selectors = rule.selectorText.split(',');
-
-                var selector = null;
                 for (var j = selectors.length - 1; j >= 0; j--) {
+                    var selector = {
+                        selectorText: selectors[j].trim(),
+                        specificity: 0
+                    };
+
                     var elements = [];
-                    selector = selectors[j].trim();
 
                     try {
-                        elements = document.querySelectorAll(selector);
+                        elements = document.querySelectorAll(
+                            selector.selectorText
+                        );
                     } catch (e) {
                         continue;
                     }
 
                     if (elements && elements.length) {
-                        parser.specificity = 0;
-                        var specificity = parser.parse(selector);
+                        var specificity = parser.parse(
+                            selector.selectorText,
+                            selector
+                        );
 
                         for (var k = 0; k < elements.length; k++) {
                             var el = elements[k];
@@ -82,7 +88,7 @@ define('styner', ['css-parser'], function(parser) {
                                 pendingStyles,
                                 stynerId,
                                 rule.style,
-                                specificity
+                                selector.specificity
                             );
                         }
                     }

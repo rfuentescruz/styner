@@ -1,7 +1,3 @@
-%{
-parser.specificity = 0;
-%}
-
 %lex
 
 %option case-insensitive
@@ -61,10 +57,14 @@ V         v|\\0{0,4}(58|78)(\r\n|[ \t\r\n\f])?|\\v
 
 .                { return yytext; };
 /lex
+
+%start all
+%parse-param selector
+
 %%
 
 all
-  : selector EOF { return parser.specificity; }
+  : selector EOF { return selector.specificity; }
   ;
 
 selector
@@ -86,7 +86,7 @@ simple_selector_sequence
   ;
 
 element_selector
-  : type_selector { parser.specificity += 1; }
+  : type_selector { selector.specificity += 1 }
   | universal
   ;
 
@@ -96,9 +96,9 @@ selector_qualifiers
   ;
 
 selector_qualifier
-  : HASH { parser.specificity += 100; }
-  | class { parser.specificity += 10; }
-  | attrib { parser.specificity += 10; }
+  : HASH { selector.specificity += 100; }
+  | class { selector.specificity += 10; }
+  | attrib { selector.specificity += 10; }
   | negation
   | pseudo
   ;
@@ -152,10 +152,10 @@ attrib_value
   ;
 
 pseudo
-  : "::" functional_pseudo { parser.specificity += 1; $$ = $1 + '' + $2; }
-  | "::" IDENT { parser.specificity += 1; $$ = $1 + '' + $2; }
-  | ':' functional_pseudo { parser.specificity += 10; $$ = $1 + '' + $2; }
-  | ':' IDENT { parser.specificity += 10; $$ = $1 + '' + $2; }
+  : "::" functional_pseudo { selector.specificity += 1; $$ = $1 + '' + $2; }
+  | "::" IDENT { selector.specificity += 1; $$ = $1 + '' + $2; }
+  | ':' functional_pseudo { selector.specificity += 10; $$ = $1 + '' + $2; }
+  | ':' IDENT { selector.specificity += 10; $$ = $1 + '' + $2; }
   ;
 
 functional_pseudo
