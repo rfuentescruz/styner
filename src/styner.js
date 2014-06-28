@@ -52,10 +52,14 @@ define('styner', ['css-parser'], function(parser) {
                     }
 
                     if (elements && elements.length) {
-                        var specificity = parser.parse(
-                            selector.selectorText,
-                            selector
-                        );
+                        try {
+                            parser.parse(
+                                selector.selectorText,
+                                selector
+                            );
+                        } catch (e) {
+                            selector.specificity = 0;
+                        }
 
                         for (var k = 0; k < elements.length; k++) {
                             var el = elements[k];
