@@ -1,6 +1,6 @@
 # styner #
 
-**`v0.2.1-alpha`**
+**`v0.2.2-alpha`**
 > A CSS style inliner
 
 

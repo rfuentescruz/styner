@@ -1,0 +1,6 @@
+lib/
+====
+
+This is where the auto-generated library source code is placed. Run 
+`make lib` to generate the necessary files to use styner
+

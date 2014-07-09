@@ -1,7 +1,7 @@
 {
     "name": "styner",
     "description": "A CSS style inliner",
-    "version": "0.2.1-alpha",
+    "version": "0.2.2-alpha",
     "author": "Rolando Cruz (https://github.com/rfuentescruz)",
     "repository": {
         "type": "git",
@@ -27,5 +27,9 @@
         "requirejs": "~2.1.14",
         "almond": "~0.2.9",
         "casperjs": "~1.1.0"
+    },
+    "scripts": {
+        "prepublish": "make lib",
+        "test": "make test"
     }
 }
