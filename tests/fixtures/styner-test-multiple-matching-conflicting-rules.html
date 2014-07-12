@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Specificity Parser Test Bootstrap File</title>
+    <link rel="stylesheet" type="text/css" href="./extern-style-1.css">
+    <script type="text/javascript" src="../../node_modules/requirejs/require.js"></script>
+    <script type="text/javascript">
+        require(['../../lib/styner'], function(styner) {
+            window.styner = styner;
+        });
+    </script>
+    <style type="text/css">
+        #header-id {
+            color: red;
+        }
+
+        #header-id {
+            color: blue;
+        }
+
+        #header-id-2 {
+            font-size: 100px;
+        }
+
+        #header-id-3 {
+            margin-top: 100px;
+        }
+
+        #header-id-4 {
+            padding-top: 200px;
+        }
+
+        #header-id-5 {
+            float: left;
+        }
+
+        #header-id-6 {
+            display: 'none';
+        }
+    </style>
+    <style type="text/css">
+        #header-id {
+            color: green;
+        }
+
+        h2 {
+            font-size: 1px;
+        }
+
+        h3 {
+            margin-top: 1px !important;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="./extern-style-2.css">
+</head>
+<body>
+    <h1 id="header-id">Header 1</h1>
+    <h2 id="header-id-2">Header 2</h2>
+    <h3 id="header-id-3" style="margin-top: 500px">Header 3</h3>
+    <h4 id="header-id-4">Header 4</h4>
+    <h5 id="header-id-5">Header 5</h5>
+    <h6 id="header-id-6" style="display: inline-block">Header 6</h6>
+</body>
+</html>

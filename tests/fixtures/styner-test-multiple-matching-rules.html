@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Specificity Parser Test Bootstrap File</title>
+    <script type="text/javascript" src="../../node_modules/requirejs/require.js"></script>
+    <script type="text/javascript">
+        require(['../../lib/styner'], function(styner) {
+            window.styner = styner;
+        });
+    </script>
+    <style type="text/css">
+        #header-id {
+            color: red;
+        }
+
+        #header-id {
+            font-size: 200px;
+        }
+
+        .header-class {
+            margin-top: 100px;
+        }
+
+        h1 {
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="header-id" class="header-class">Hello, world!</h1>
+    <h2 id="non-matching-id" class="header-class">foobarbaz</h2>
+</body>
+</html>
