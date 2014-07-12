@@ -70,7 +70,7 @@ if (!command || command == 'help') {
 
             if (command == 'watch') {
                 spawn(
-                    'grunt',
+                    __dirname + '/../node_modules/.bin/grunt',
                     [
                         '--gruntfile',
                         __dirname + '/../files/Gruntfile.js',
@@ -82,7 +82,7 @@ if (!command || command == 'help') {
             } else if (command == 'build') {
                 var target = process.argv[3] || config.buildFilename;
                 spawn(
-                    'grunt',
+                    __dirname + '/../node_modules/.bin/grunt',
                     [
                         '--gruntfile',
                         __dirname + '/../files/Gruntfile.js',
@@ -98,4 +98,3 @@ if (!command || command == 'help') {
         }
     });
 }
-
