@@ -3,8 +3,8 @@ var util = require('utils'),
 
 var dirname = fs.absolute(phantom.casperScriptBaseDir);
 
-casper.test.begin('Test selector specificity', function(test) {
-    casper.start(dirname + '/fixtures/specificity-parser-test.html').then(function() {
+casper.test.begin('Test selector specificity', 40, function(test) {
+    casper.start(dirname + '/../fixtures/specificity-parser-test.html').then(function() {
         test.assertSelectorParserReturns = function(selector, expected, seed) {
             test.assertEvalEquals(
                 function(selector, initialSpecificity) {
@@ -70,8 +70,8 @@ casper.test.begin('Test selector specificity', function(test) {
     });
 });
 
-casper.test.begin('Test invalid selectors', function(test) {
-    casper.start(dirname + '/fixtures/specificity-parser-test.html').then(function() {
+casper.test.begin('Test invalid selectors', 4, function(test) {
+    casper.start(dirname + '/../fixtures/specificity-parser-test.html').then(function() {
         this.evaluate(function() {
             var style = document.createElement('style');
             style.setAttribute('type', 'text/css');
@@ -103,8 +103,8 @@ casper.test.begin('Test invalid selectors', function(test) {
     });
 });
 
-casper.test.begin('Test browser JS API for CSS', function(test) {
-    casper.start(dirname + '/fixtures/specificity-parser-test.html').then(function() {
+casper.test.begin('Test browser JS API for CSS', 5, function(test) {
+    casper.start(dirname + '/../fixtures/specificity-parser-test.html').then(function() {
         this.evaluate(function() {
             var style = document.createElement('style');
             style.setAttribute('type', 'text/css');

@@ -3,8 +3,10 @@ var util = require('utils'),
 
 var dirname = fs.absolute(phantom.casperScriptBaseDir);
 
-casper.test.begin('Test matching rule styling', function(test) {
-    casper.start(dirname + '/fixtures/styner-test-simple-matching-rule.html').then(function() {
+casper.test.begin('Test matching rule styling', 6, function(test) {
+    casper.start(
+        dirname + '/../fixtures/styner-test-simple-matching-rule.html'
+    ).then(function() {
         test.assertEval(function() {
             var header = document.getElementById('header');
             return header.style.length === 0;
@@ -43,8 +45,10 @@ casper.test.begin('Test matching rule styling', function(test) {
     });
 });
 
-casper.test.begin('Test multiple matching rules styling', function(test) {
-    casper.start(dirname + '/fixtures/styner-test-multiple-matching-rules.html').then(function() {
+casper.test.begin('Test multiple matching rules styling', 5, function(test) {
+    casper.start(
+        dirname + '/../fixtures/styner-test-multiple-matching-rules.html'
+    ).then(function() {
         test.assertEval(function() {
             var header = document.getElementById('header-id');
             return header.style.length === 0;
@@ -93,11 +97,11 @@ casper.test.begin('Test multiple matching rules styling', function(test) {
     });
 });
 
-casper.test.begin('Test same specificity rule order', function(test) {
+casper.test.begin('Test same specificity rule order', 4, function(test) {
     casper.start(
         util.format('%s/%s',
             dirname,
-            'fixtures/styner-test-multiple-matching-conflicting-rules.html'
+            '../fixtures/styner-test-multiple-matching-conflicting-rules.html'
         )
     ).then(function() {
         test.assertEval(function() {
@@ -134,11 +138,11 @@ casper.test.begin('Test same specificity rule order', function(test) {
     });
 });
 
-casper.test.begin('Test different specificity rule order', function(test) {
+casper.test.begin('Test different specificity rule order', 4, function(test) {
     casper.start(
         util.format('%s/%s',
             dirname,
-            'fixtures/styner-test-multiple-matching-conflicting-rules.html'
+            '../fixtures/styner-test-multiple-matching-conflicting-rules.html'
         )
     ).then(function() {
         test.assertEval(function() {
@@ -172,11 +176,11 @@ casper.test.begin('Test different specificity rule order', function(test) {
     });
 });
 
-casper.test.begin('Test rule source specificity', function(test) {
+casper.test.begin('Test rule source specificity', 4, function(test) {
     casper.start(
         util.format('%s/%s',
             dirname,
-            'fixtures/styner-test-multiple-matching-conflicting-rules.html'
+            '../fixtures/styner-test-multiple-matching-conflicting-rules.html'
         )
     ).then(function() {
         test.assertEval(function() {
@@ -212,11 +216,12 @@ casper.test.begin('Test rule source specificity', function(test) {
 
 casper.test.begin(
     'Test extern and document styles have the same specificity',
+    4,
     function(test) {
         casper.start(
             util.format('%s/%s',
                 dirname,
-                'fixtures/styner-test-multiple-matching-conflicting-rules.html'
+                '../fixtures/styner-test-multiple-matching-conflicting-rules.html'
             )
         ).then(function() {
             test.assertEval(function() {
@@ -255,11 +260,12 @@ casper.test.begin(
 
 casper.test.begin(
     'Test inline styles are more specific than other sources',
+    3,
     function(test) {
         casper.start(
             util.format('%s/%s',
                 dirname,
-                'fixtures/styner-test-multiple-matching-conflicting-rules.html'
+                '../fixtures/styner-test-multiple-matching-conflicting-rules.html'
             )
         ).then(function() {
             test.assertEval(function() {
@@ -291,11 +297,11 @@ casper.test.begin(
     }
 );
 
-casper.test.begin('Test "!important" specificity', function(test) {
+casper.test.begin('Test "!important" specificity', 3, function(test) {
     casper.start(
         util.format('%s/%s',
             dirname,
-            'fixtures/styner-test-multiple-matching-conflicting-rules.html'
+            '../fixtures/styner-test-multiple-matching-conflicting-rules.html'
         )
     ).then(function() {
         test.assertEval(function() {
@@ -324,14 +330,13 @@ casper.test.begin('Test "!important" specificity', function(test) {
     });
 });
 
-casper.test.begin('Test media queries', function(test) {
+casper.test.begin('Test media queries', 4, function(test) {
     casper.start(
         util.format('%s/%s',
             dirname,
-            'fixtures/styner-test-media-queries.html'
+            '../fixtures/styner-test-media-queries.html'
         )
     ).then(function() {
-        test.info("Setting viewport width to 200");
         casper.viewport(200, 500);
     }).then(function() {
             test.assertEval(function() {
