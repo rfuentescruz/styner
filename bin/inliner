@@ -8,7 +8,7 @@ var args = system.args;
 
 var showUsage = function() {
     console.error('Usage: phantomjs ' + args[0] + ' <infile> <outfile> [<width:height>]');
-    phantom.exit(0);
+    phantom.exit(3);
 };
 
 if (args.length < 3) {
@@ -62,12 +62,22 @@ source.onConsoleMessage = function(msg) {
 var start = new Date().getTime();
 
 source.open(INFILE, function(status) {
+    if (status == 'fail') {
+        console.error('Invalid input file');
+        phantom.exit(1);
+    }
+
     source.injectJs('../lib/styner.min.js');
     source.evaluate(function() {
         styner.run();
     });
 
-    fs.write(OUTFILE, source.content, 'w');
+    try {
+        fs.write(OUTFILE, source.content, 'w')
+    } catch(e) {
+        console.error(e);
+        phantom.exit(2);
+    }
     var end = new Date().getTime();
 
     if (DEBUG) {

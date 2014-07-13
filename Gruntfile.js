@@ -1,9 +1,12 @@
 var path = require('path');
 
+var testResultDir = path.resolve(__dirname, 'tests/logs/');
+process.env['XUNIT_FILE'] = testResultDir + '/test-inliner.xml';
+
 module.exports = function(grunt) {
     grunt.initConfig({
         project: {
-            testResultDir: 'tests/logs/' + Date.now()
+            testResultDir: testResultDir
         },
         casper: {
             options: {
@@ -18,6 +21,14 @@ module.exports = function(grunt) {
             styner: {
                 src: ['tests/lib_tests/test-styner.js'],
                 dest: '<%= project.testResultDir %>/test-styner.xml'
+            }
+        },
+        mochaTest: {
+            test: {
+                options: {
+                    reporter: 'xunit-file'
+                },
+                src: ['tests/lib_tests/test-inliner.js']
             }
         },
         jison: {
@@ -66,6 +77,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-casper');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-jison');
 
     grunt.registerTask('compile', [
@@ -74,5 +86,5 @@ module.exports = function(grunt) {
         'requirejs:optimized'
     ]);
 
-    grunt.registerTask('test', ['casper']);
+    grunt.registerTask('test', ['casper', 'mochaTest']);
 };
