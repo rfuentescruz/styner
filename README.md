@@ -6,7 +6,7 @@
 
 ## Installation ##
 
-`styner` requires [nodejs](https://nodejs.org) v0.8 or higher
+`styner` requires [nodejs](https://nodejs.org) v0.10 or higher
 
 Install `styner` with:
 
